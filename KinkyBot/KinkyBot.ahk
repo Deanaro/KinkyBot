@@ -1,19 +1,23 @@
-﻿v1.01
+﻿Version = v1.02
 
-linecount = 1
 delay = 850
-
+TextArray :=[Empty]
+ArrayLength = 0
 
 F9::
+waspaused = %A_IsPaused%
+Pause, Off
 
-Send **KINKY BOT v1.01** +{Enter}+{Enter}
-Send **To use this bot, type something then press F10, the bot will copy the text and spam it in chat. 
-Send You can also edit a variable in this script called linecount to change the amount of lines per message.**
+Send **KINKY BOT %Version%** +{Enter}+{Enter}
+Send **To use this bot, type something then press F10 to add it to a list.
+Send +{Enter}Press F11 to start the bot.**
 Send +{Enter}Bot Available at https://github.com/Deanaro/KinkyBot
 Send +{Enter}This bot requires AHK https://autohotkey.com/
 Send +{Enter}+{Enter}**F9** - Help
-Send +{Enter}**F10** - Start
-Send +{Enter}**F11** - Start without copy
+Send +{Enter}**F10** - Add Line
+Send +{Enter}**Ctrl{+}F10** - Reset Array
+Send +{Enter}**F11** - Send in loop
+Send +{Enter}**Ctrl{+}F11** - Send
 Send +{Enter}**F12** - Pause
 Send +{Enter}**Ctrl{+}F12** - Terminate Bot
 
@@ -23,34 +27,77 @@ Send {Enter}
 
 Send {Enter}
 
-Return
-
-F10::
-
-Send ^a
-Send ^c
-Send {Delete}
-Pause, Off
-Send {F12}
-Send {F11}
-Return
-
-F11::
-
-Loop,
+if waspaused
 {
-	inputdelay = %delay%/%linecount%
-	Send ^v 
-	loop %linecount%-1
-	{
-		Send +{Enter}^v  
-	}
-	Send {Enter}
-	sleep, inputdelay
+Pause, On
 }
 Return
 
-F12::Pause
+
+
+
+
+F10::
+waspaused = %A_IsPaused%
+Pause, Off
+Send ^a
+Send ^c
+ArrayLength ++
+TextArray[ArrayLength] := clipboard
+Send {Delete}
+if waspaused
+{
+Pause, On
+}
+Return
+
+^F10::
+	waspaused = %A_IsPaused%
+	Pause, Off
+	TextArray :=[]
+	ArrayLength = 0
+	if waspaused
+	{
+	Pause, On
+	}
+	
+Return
+
+F11::
+Pause, Off
+Loop,
+{
+	i = 1
+	loop, %ArrayLength%
+	{
+ 		Send, % TextArray[i]
+		i ++
+ 		Send {Enter}
+ 		Sleep, Delay
+	}
+}
+Return
+
+^F11::
+waspaused = %A_IsPaused%
+Pause, Off
+i = 1
+loop, %ArrayLength%
+{
+ 	Send, % TextArray[i]
+	i ++
+ 	Send {Enter}
+ 	Sleep, Delay
+}
+if waspaused
+{
+Pause, On
+}
+Return
+
+F12::
+Pause
+Return
 
 ^F12::
 ExitApp
