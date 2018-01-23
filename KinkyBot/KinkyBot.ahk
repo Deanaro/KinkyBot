@@ -1,12 +1,11 @@
-﻿Version = v1.03
+﻿Version = v1.04
 
 delay := 850
 TextArray :=[Empty]
 ArrayLength = 0
 
 F9::
-waspaused = %A_IsPaused%
-Pause, Off
+
 
 Send **KINKY BOT %Version%** +{Enter}+{Enter}
 Send **To use this bot, type something then press F10 to add it to a list.
@@ -14,7 +13,7 @@ Send +{Enter}Press F11 to start the bot.**
 Send +{Enter}Bot Available at https://github.com/Deanaro/KinkyBot
 Send +{Enter}This bot requires AHK https://autohotkey.com/
 Send +{Enter}+{Enter}**F8** - Set delay
-Send +{Enter}+{Enter}**F9** - Help
+Send +{Enter}**F9** - Help
 Send +{Enter}**F10** - Add Line
 Send +{Enter}**Ctrl{+}F10** - Reset Array
 Send +{Enter}**F11** - Send in loop
@@ -28,10 +27,7 @@ Send {Enter}
 
 Send {Enter}
 
-if waspaused
-{
-Pause, On
-}
+
 Return
 
 F8::
@@ -49,17 +45,13 @@ Send Please enter a number in milliseconds
 Return
 
 F10::
-waspaused = %A_IsPaused%
-Pause, Off
+
 Send ^a
 Send ^c
 ArrayLength ++
 TextArray[ArrayLength] := clipboard
 Send {Delete}
-if waspaused
-{
-Pause, On
-}
+
 Return
 
 ^F10::
@@ -90,8 +82,7 @@ Loop,
 Return
 
 ^F11::
-waspaused = %A_IsPaused%
-Pause, Off
+
 i = 1
 loop, %ArrayLength%
 {
@@ -100,10 +91,7 @@ loop, %ArrayLength%
  	Send {Enter}
  	Sleep, Delay
 }
-if waspaused
-{
-Pause, On
-}
+
 Return
 
 F12::
